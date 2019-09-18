@@ -1,0 +1,77 @@
+<%= form_with scope: :user, url: csv_send_data_path , local: true do |form| %>
+	
+	<p>
+		<%= form.label :file %><br>
+		<%= form.file_field :file %>
+	</p>
+
+	<p>
+		<%= form.submit %>
+		</p>
+<% end %>
+<%= link_to "Download CSV", csv_download_path(format: "csv") %>
+
+<html>
+<head>
+<link rel="stylesheet"  href="http:////cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script  src ="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script >
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+</head>
+<table id="myTable" class="display">
+    <thead>
+        <tr>
+        	<th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Employee Id </th>
+            <th>Mobile No.</th>
+        </tr>
+    </thead>
+    <tbody>
+    	<% @data.each do |data| %>
+        <tr>
+        	 <td><input type="checkbox" value="<%= data.id%>" class="delete-user" id="<%=data.id %>"></td>
+            <td><%= data.name%></td>
+            <td><%= data.email %></td>
+            <td><%= data.employee_id%></td>
+            <td><%= data.mobile_no %></td>
+        </tr>
+        <%end%>
+    </tbody>
+</table>
+
+<%= form_with scope: :delete_users, url: csv_delete_path , local: true do |form| %>
+    <p>
+        <%= form.hidden_field :data , id: "duser" %>
+    </p>
+
+    <p>
+        <%= form.submit  'Delete Selected' %>
+    </p>
+<% end %>
+
+<script type="text/javascript">
+    $('.delete-user').on('click', function (argument) {
+      if($(this).prop('checked') == true){
+    $('#duser').val($('#duser').val()+" "+this.id);
+}else{
+var array = $('#duser').val().split(" ")
+
+// var array = [2, 5, 9];
+var index = array.indexOf(this.id);
+if (index > -1) {
+  array.splice(index, 1);
+  $('#duser').val(array.join(" "));
+}
+// array = [2, 9]
+
+}
+      
+    })
+</script>
+</html>
