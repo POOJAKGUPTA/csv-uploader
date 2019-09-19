@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-	def self.import(file)
+	# To import data using csv file and saving in database 
+    def self.import(file)
         CSV.foreach(file.path, headers: true) do |row|
             user_hash = User.new
             user_hash.name = row[0]
@@ -10,6 +11,7 @@ class User < ApplicationRecord
         end
     end
 
+    #export data from database to csv
     def self.to_csv(options = {})
      desired_columns = ["name", "employee_id", "email", "mobile_no"]
         CSV.generate(options) do |csv|
