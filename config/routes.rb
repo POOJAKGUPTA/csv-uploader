@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :blogs
   get 'csv_uploader/show'
  
   root 'csv_uploader#show'
